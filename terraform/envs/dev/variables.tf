@@ -6,15 +6,17 @@ variable "environment" {
 variable "management_cidr_block" {
   type        = string
   description = "CIDR block for the management VPC"
-
+  
 }
 
 variable "management_public_subnet_cidr" {
   type = string
+  description = "CIDR block for the management public subnet"
 }
 
 variable "management_public_az" {
   type = string
+  description = "Availability Zone for the management public subnet"
 }
 
 variable "region" {
