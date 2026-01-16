@@ -4,7 +4,7 @@ resource "aws_internet_gateway" "management" {
 
 
   tags = {
-    Name = "management-igw"
+    Name = "${var.environment}-management-igw"
   }
 }
 

@@ -22,3 +22,19 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "management_public_subnet_cidr" {
+  type = string
+}
+
+variable "management_public_az" {
+  type = string
+}
+
+variable "tgw_id" {
+  type = string
+}
+
+variable "tgw_destination_cidrs" {
+  type = list(string)
+}
