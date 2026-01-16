@@ -22,3 +22,7 @@ variable "management_public_az" {
   default = "us-east-1a"
 }
 
+variable "region" {
+  type = string
+}
+

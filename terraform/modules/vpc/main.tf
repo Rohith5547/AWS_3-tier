@@ -8,13 +8,6 @@ resource "aws_vpc" "management" {
     Name = "${var.environment}-management-vpc"
   }
 }
-resource "aws_vpc" "application" {
-  cidr_block       = var.application_cidr_block
 
-  tags = {
-        Name = "${var.environment}-application-vpc"
-    }
-
-}
 
 
