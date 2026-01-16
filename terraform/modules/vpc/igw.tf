@@ -8,7 +8,7 @@ resource "aws_internet_gateway" "management" {
   }
 }
 
-resource "aws_internet_gateway_attachment" "management" {
-  internet_gateway_id = aws_internet_gateway.management.id
-  vpc_id              = aws_vpc.management.id
-}
+# resource "aws_internet_gateway_attachment" "management" {
+#   internet_gateway_id = aws_internet_gateway.management.id
+#   vpc_id              = aws_vpc.management.id
+# }
