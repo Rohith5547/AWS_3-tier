@@ -1,11 +1,11 @@
 resource "aws_ec2_transit_gateway" "tgw" {
-  description                     = "Central Transit Gateway"
+  description                     = "Dev Central Transit Gateway"
   auto_accept_shared_attachments  = "enable"
   default_route_table_association = "enable"
   default_route_table_propagation = "enable"
 
   tags = {
-    Name = "${var.environment}-management-tgw-attachment"
+    Name = "${var.environment}-centra-tgw"
   }
 }
 
@@ -18,6 +18,6 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "this" {
   ipv6_support = "disable"
 
   tags = {
-    Name = "central"
+    Name = "${var.environment}-management-tgw-attachment"
   }
 }

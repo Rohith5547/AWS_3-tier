@@ -15,5 +15,3 @@ variable "management_public_subnet_cidr" {
 variable "management_public_az" {
   type = string
 }
-
-

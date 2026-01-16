@@ -15,7 +15,8 @@ resource "aws_route_table" "management_public" {
   vpc_id = aws_vpc.management.id
 
   tags = {
-    Name = "management-public-rt"
+    Name = "${var.environment}-management-public-rt"
+    Environment = var.environment
   }
 }
 
