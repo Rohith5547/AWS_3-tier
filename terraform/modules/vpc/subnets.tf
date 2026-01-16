@@ -19,6 +19,15 @@ resource "aws_route_table" "management_public" {
   }
 }
 
+# Create an Internet Gateway
+resource "aws_internet_gateway" "management" {
+  vpc_id = aws_vpc.management.id
+  tags = {
+    Name = "${var.environment}-management-igw"
+  }
+}
+
+
 # 5. Add a route to the Internet Gateway in the public route table
 resource "aws_route" "public_internet_gateway_route" {
   route_table_id         = aws_route_table.management_public.id

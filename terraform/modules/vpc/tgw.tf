@@ -5,7 +5,7 @@ resource "aws_ec2_transit_gateway" "tgw" {
   default_route_table_propagation = "enable"
 
   tags = {
-    Name = "central-tgw"
+    Name = "${var.environment}-management-tgw-attachment"
   }
 }
 
@@ -21,13 +21,3 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "this" {
     Name = "central"
   }
 }
-
-# resource "aws_route" "to_tgw" {
-#   for_each = toset(var.tgw_destination_cidrs)
-
-#   route_table_id         = aws_route_table.public.id
-#   destination_cidr_block = each.value
-#   transit_gateway_id     = var.tgw_id
-
-#   depends_on = [aws_ec2_transit_gateway_vpc_attachment.this]
-# }

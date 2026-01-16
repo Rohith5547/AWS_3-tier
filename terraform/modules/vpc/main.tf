@@ -8,6 +8,3 @@ resource "aws_vpc" "management" {
     Name = "${var.environment}-management-vpc"
   }
 }
-
-
-
