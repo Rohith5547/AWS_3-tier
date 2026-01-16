@@ -6,6 +6,11 @@ variable "management_cidr_block" {
 variable "environment" {
   type        = string
   description = "Environment name (dev, qa, prod)"
+
+  validation {
+    condition     = contains(["dev", "qa", "prod"], var.environment)
+    error_message = "Environment must be one of dev, qa, or prod."
+  }
 }
 
 variable "management_public_subnet_cidr" {
