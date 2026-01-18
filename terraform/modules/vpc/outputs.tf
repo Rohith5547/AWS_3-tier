@@ -13,3 +13,9 @@ output "transit_gateway_id" {
 output "management_subnet_cidr_block" {
   value = aws_subnet.management_public_subnet.cidr_block
 }
+
+
+output "mananagement_public_subnet_ids" {
+  description = "Public subnet IDs"
+  value       = [aws_subnet.management_public_subnet[*].id]
+}
