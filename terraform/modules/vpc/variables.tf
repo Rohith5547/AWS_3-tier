@@ -1,6 +1,6 @@
-variable "management_cidr_block" {
+variable "vpc_cidr" {
   type        = string
-  description = "CIDR block for the management VPC"
+  description = "CIDR block"
 }
 
 variable "environment" {
@@ -13,10 +13,15 @@ variable "environment" {
   }
 }
 
-variable "management_public_subnet_cidr" {
-  type = string
+variable "public_subnets" {
+  type = map(string)
+  description = "mapping Az to cidr block"
+  default = ""
 }
 
-variable "management_public_az" {
-  type = string
+variable "private_subnets" {
+  type = map(string)
+  description = "mapping Az to cidr block"
+  default = ""
 }
+
