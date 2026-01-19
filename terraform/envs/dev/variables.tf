@@ -10,13 +10,30 @@ variable "management" {
     private_subnets  = map(string)
   })
 }
-variable "application" {
+variable "application_web_tier" {
   type = object({
     vpc_cidr         = string
     public_subnets   = map(string)
     private_subnets  = map(string)
   })
 }
+
+variable "application_app_tier" {
+  type = object({
+    vpc_cidr         = string
+    public_subnets   = map(string)
+    private_subnets  = map(string)
+  })
+}
+
+variable "application_database_tier" {
+  type = object({
+    vpc_cidr         = string
+    public_subnets   = map(string)
+    private_subnets  = map(string)
+  })
+}
+
 
 
 

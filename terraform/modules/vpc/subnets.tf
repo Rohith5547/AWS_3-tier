@@ -14,8 +14,8 @@ resource "aws_subnet" "public_subnets" {
   }
 }
 
-resource "aws_subnet" "private_subnets" {
-  for_each          = var.private_subnets
+resource "aws_subnet" "web" {
+  for_each          = var.web_subnets
   
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = each.value
@@ -23,9 +23,33 @@ resource "aws_subnet" "private_subnets" {
   # Choose an Availability Zone
   availability_zone = each.key
 
-  # Assign public IP addresses automatically to instances launched in this subnet
-  map_public_ip_on_launch = true 
+  tags = {
+    Name = "${var.environment}-private-subnet-${each.key}"
+  }
+}
 
+resource "aws_subnet" "app" {
+  for_each          = var.web_subnets
+  
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = each.value
+
+  # Choose an Availability Zone
+  availability_zone = each.key
+
+  tags = {
+    Name = "${var.environment}-private-subnet-${each.key}"
+  }
+}
+
+resource "aws_subnet" "db" {
+  for_each          = var.web_subnets
+  
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = each.value
+
+  # Choose an Availability Zone
+  availability_zone = each.key
   tags = {
     Name = "${var.environment}-private-subnet-${each.key}"
   }

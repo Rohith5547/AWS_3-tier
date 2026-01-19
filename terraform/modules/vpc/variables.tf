@@ -19,9 +19,18 @@ variable "public_subnets" {
   default = ""
 }
 
-variable "private_subnets" {
-  type = map(string)
-  description = "mapping Az to cidr block"
-  default = ""
+variable "web_subnets" {
+  type    = map(string)
+  default = {}
+}
+
+variable "app_subnets" {
+  type    = map(string)
+  default = {}
+}
+
+variable "db_subnets" {
+  type    = map(string)
+  default = {}
 }
 

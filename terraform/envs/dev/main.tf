@@ -12,17 +12,33 @@ module "management" {
   vpc_cidr        = var.management.vpc_cidr
   
   public_subnets  = var.management.public_subnets
-  private_subnets = var.management.private_subnets
 
 }
 
-module "application" {
+module "application_web" {
   source = "../../modules/vpc"
 
-  vpc_cidr        = var.management.vpc_cidr
+  vpc_cidr        = var.application.vpc_cidr
   environment     = var.environment
-  public_subnets  = var.management.public_subnets
-  private_subnets = var.management.private_subnets
+  public_subnets  = var.application_web_tier.public_subnets
+  web_subnets = var.application_web_tier.private_subnets
+
+}
+module "application_app" {
+  source = "../../modules/vpc"
+
+  vpc_cidr        = var.application.vpc_cidr
+  environment     = var.environment
+  public_subnets  = var.application_app_tier.public_subnets
+  app_subnets = var.application_app_tier.private_subnets
+
+}
+module "application_database" {
+  source = "../../modules/vpc"
+
+  vpc_cidr        = var.application.vpc_cidr
+  environment     = var.environment
+  db_subnets = var.application_database_tier.private_subnets
 
 }
 module "bastion" {
