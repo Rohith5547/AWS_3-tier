@@ -7,32 +7,21 @@ variable "management" {
   type = object({
     vpc_cidr         = string
     public_subnets   = map(string)
-    private_subnets  = map(string)
   })
 }
-variable "application_web_tier" {
+variable "application" {
   type = object({
-    vpc_cidr         = string
-    public_subnets   = map(string)
-    private_subnets  = map(string)
+    vpc_cidr = string
+
+    public_subnets = map(string)
+    web_subnets    = map(string)
+    app_subnets    = map(string)
+    db_subnets     = map(string)
+    cicd_subnets   = map(string)
   })
 }
 
-variable "application_app_tier" {
-  type = object({
-    vpc_cidr         = string
-    public_subnets   = map(string)
-    private_subnets  = map(string)
-  })
-}
 
-variable "application_database_tier" {
-  type = object({
-    vpc_cidr         = string
-    public_subnets   = map(string)
-    private_subnets  = map(string)
-  })
-}
 
 
 

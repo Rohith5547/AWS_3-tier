@@ -34,3 +34,8 @@ variable "db_subnets" {
   default = {}
 }
 
+variable "cicd_subnets" {
+  type    = map(string)
+  default = {}
+}
+

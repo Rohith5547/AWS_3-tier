@@ -1,5 +1,5 @@
 resource "aws_key_pair" "sshkey" {
-  key_name   = "loginKey"
+  key_name   = "loginKey-${var.environment}"
   public_key = file("~/.ssh/id_ed25519.pub")
 }
 
@@ -15,32 +15,19 @@ module "management" {
 
 }
 
-module "application_web" {
+module "application" {
   source = "../../modules/vpc"
 
   vpc_cidr        = var.application.vpc_cidr
   environment     = var.environment
-  public_subnets  = var.application_web_tier.public_subnets
-  web_subnets = var.application_web_tier.private_subnets
+  web_subnets = var.application.web_subnets
+  app_subnets = var.application.app_subnets
+  db_subnets = var.application.db_subnets
+  cicd_subnets = var.application.cicd_subnets
+  public_subnets = var.application.public_subnets
 
 }
-module "application_app" {
-  source = "../../modules/vpc"
 
-  vpc_cidr        = var.application.vpc_cidr
-  environment     = var.environment
-  public_subnets  = var.application_app_tier.public_subnets
-  app_subnets = var.application_app_tier.private_subnets
-
-}
-module "application_database" {
-  source = "../../modules/vpc"
-
-  vpc_cidr        = var.application.vpc_cidr
-  environment     = var.environment
-  db_subnets = var.application_database_tier.private_subnets
-
-}
 module "bastion" {
   source = "../../modules/bastion"
 
