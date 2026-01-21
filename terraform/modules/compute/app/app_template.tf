@@ -15,7 +15,7 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_launch_template" "app" {
-  name_prefix = "app-application-"
+  name_prefix = "app-"
   
   ebs_optimized = true
 
