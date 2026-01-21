@@ -35,15 +35,15 @@ resource "aws_launch_template" "web" {
     associate_public_ip_address = false
   }
 
-  vpc_security_group_ids = ["sg-12345678"]
+  vpc_security_group_ids = [aws_security_group.web_sg.id]
 
   tag_specifications {
     resource_type = "instance"
 
     tags = {
-      Name = "web-ec2"
+      Name = "web-instance"
     }
   }
 
-  user_data = filebase64("${path.module}/example.sh")
+  user_data = filebase64("${path.module}/web_userdata.sh")
 }

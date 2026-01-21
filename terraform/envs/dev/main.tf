@@ -42,7 +42,8 @@ module "bastion" {
 module "security" {
   source = "../../modules/security"
 
-  management_vpc_id = module.management.vpc_id 
+  application_vpc_id = module.management.vpc.id
+  management_vpc_id = module.application.vpc.id
 
 }
 
