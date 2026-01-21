@@ -13,8 +13,10 @@ useradd -m -U -d /opt/tomcat -s /bin/false tomcat || true
 
 # 4. Install Tomcat
 TOMCAT_VERSION=9.0.86
-cd /tmp
-curl -fsSLO https://dlcdn.apache.org/tomcat/tomcat-9/v${TOMCAT_VERSION%.*}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz
+
+curl -fLO \
+https://archive.apache.org/dist/tomcat/tomcat-9/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz
+
 
 mkdir -p /opt/tomcat
 tar -xzf apache-tomcat-${TOMCAT_VERSION}.tar.gz -C /opt/tomcat --strip-components=1
