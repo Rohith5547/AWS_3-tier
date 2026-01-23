@@ -16,7 +16,7 @@ variable "environment" {
 variable "public_subnets" {
   type = map(string)
   description = "mapping Az to cidr block"
-  default = ""
+  default = {}
 }
 
 variable "web_subnets" {
@@ -39,3 +39,7 @@ variable "cicd_subnets" {
   default = {}
 }
 
+variable "internal_lb_subnets" {
+  type    = map(string)
+  default = {}
+}

@@ -1,7 +1,7 @@
 resource "aws_security_group" "alb_sg" {
   name_prefix = "alb-sg-"
   vpc_id = var.application_vpc_id
-  description = "Allow SSH inbound traffic"
+  description = "Allow http and https traffic from users"
 
   # Ingress (inbound) rule for port 80 (http)
   ingress {

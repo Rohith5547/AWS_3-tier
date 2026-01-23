@@ -67,6 +67,19 @@ resource "aws_subnet" "ci_cd" {
   }
 }
 
+resource "aws_subnet" "internal_lb" {
+  for_each          = var.internal_lb_subnets
+  
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = each.value
+
+  # Choose an Availability Zone
+  availability_zone = each.key
+  tags = {
+    Name = "${var.environment}-private-subnet-${each.key}"
+  }
+}
+
 
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.vpc.id
@@ -129,7 +142,8 @@ resource "aws_route" "private_nat_route" {
 resource "aws_route_table_association" "nat_subnets" {
   for_each = merge(
     aws_subnet.app,
-    aws_subnet.ci_cd
+    aws_subnet.ci_cd,
+    aws_subnet.web
   )
 
   subnet_id      = each.value.id
@@ -146,8 +160,8 @@ resource "aws_route_table" "isolated" {
 
 resource "aws_route_table_association" "isolated_subnets" {
   for_each = merge(
-    aws_subnet.web,
-    aws_subnet.db
+    aws_subnet.db,
+    aws_subnet.internal_lb
   )
 
   subnet_id      = each.value.id

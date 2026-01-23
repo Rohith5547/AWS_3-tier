@@ -10,12 +10,7 @@ resource "aws_security_group" "internal_app_lb_sg" {
     protocol    = "tcp"
     security_groups = [aws_security_group.web_sg.id]
   }
-  ingress {
-  from_port       = 8080
-  to_port         = 8080
-  protocol        = "tcp"
-  security_groups = [aws_security_group.cicd_sg.id]
-}
+  
 
 
   # Egress (outbound) rule: allow all outbound traffic
@@ -23,6 +18,6 @@ resource "aws_security_group" "internal_app_lb_sg" {
     from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
-    security_groups = [aws_security_group.app_sg.id]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
