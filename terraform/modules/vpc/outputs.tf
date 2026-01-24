@@ -2,7 +2,7 @@ output "vpc_id" {
   value = aws_vpc.vpc.id
 }
 
-output "cidr_block" {
+output "vpc_cidr" {
   value = aws_vpc.vpc.cidr_block
 }
 
@@ -38,3 +38,14 @@ output "db_subnet_ids" {
   value = [for s in aws_subnet.db : s.id]
 }
 
+output "public_route_table_id" {
+  value = aws_route_table.public.id
+}
+
+output "isolated_route_table_id" {
+  value = aws_route_table.isolated.id
+}
+
+output "nat_route_table_id" {
+  value = aws_route_table.nat.id
+}

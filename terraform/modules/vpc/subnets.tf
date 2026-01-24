@@ -11,6 +11,7 @@ resource "aws_subnet" "public_subnets" {
 
   tags = {
     Name = "${var.environment}-public-subnet-${each.key}"
+
   }
 }
 
@@ -25,6 +26,7 @@ resource "aws_subnet" "web" {
 
   tags = {
     Name = "${var.environment}-private-subnet-${each.key}"
+    Tier = "web"
   }
 }
 
@@ -39,6 +41,7 @@ resource "aws_subnet" "app" {
 
   tags = {
     Name = "${var.environment}-private-subnet-${each.key}"
+    Tier = "app"
   }
 }
 
@@ -52,6 +55,7 @@ resource "aws_subnet" "db" {
   availability_zone = each.key
   tags = {
     Name = "${var.environment}-private-subnet-${each.key}"
+    Tier = "db"
   }
 }
 resource "aws_subnet" "ci_cd" {
@@ -129,17 +133,19 @@ resource "aws_nat_gateway" "nat" {
   depends_on = [aws_internet_gateway.igw]
 }
 resource "aws_route_table" "nat" {
+  for_each = var.public_subnets
   
   vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name = "${var.environment}-nat-rt"
+    Name = "${var.environment}-nat-rt-${each.key}"
   }
 }
 resource "aws_route" "private_nat_route" {
-  route_table_id         = aws_route_table.nat.id
+  for_each = aws_nat_gateway.nat  
+  route_table_id         = aws_route_table.nat[each.key].id
   destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = aws_nat_gateway.nat.id
+  nat_gateway_id         = each.value.id
 }
 
 resource "aws_route_table_association" "nat_subnets" {
@@ -150,7 +156,7 @@ resource "aws_route_table_association" "nat_subnets" {
   )
 
   subnet_id      = each.value.id
-  route_table_id = aws_route_table.nat.id
+  route_table_id = aws_route_table.nat[each.key].id
 }
 
 resource "aws_route_table" "isolated" {
