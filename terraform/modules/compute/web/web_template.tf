@@ -48,15 +48,15 @@ resource "aws_launch_template" "web" {
   user_data = filebase64("${path.module}/web_userdata.sh")
 }
 
-resource "aws_autoscaling_group" "example" {
-  availability_zones = ["us-east-1a"]
+resource "aws_autoscaling_group" "web-asg" {
+  vpc_zone_identifier = var.web_subnet_ids
   desired_capacity   = 1
   max_size           = 2
   min_size           = 1
 
   launch_template {
-    id      = aws_launch_template.example.id
-    version = aws_launch_template.example.latest_version
+    id      = aws_launch_template.web.id
+    version = aws_launch_template.web.latest_version
   }
 
   tag {
@@ -72,4 +72,7 @@ resource "aws_autoscaling_group" "example" {
     }
     triggers = ["tag"]
   }
+
+  target_group_arns = [aws_lb_target_group.web_instances.arn]
 }
+
