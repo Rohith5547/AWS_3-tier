@@ -14,9 +14,9 @@ resource "aws_security_group" "web_sg" {
 
   # Egress (outbound) rule: allow all outbound traffic
   egress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "-1"
-    security_groups = [aws_security_group.internal_app_lb_sg.id]
-  }
+  from_port   = 0
+  to_port     = 0
+  protocol    = "-1"
+  cidr_blocks = ["0.0.0.0/0"]
+}
 }

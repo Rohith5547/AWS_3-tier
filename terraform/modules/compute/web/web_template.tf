@@ -23,6 +23,10 @@ resource "aws_launch_template" "web" {
 
   instance_type = var.instance_type
 
+  iam_instance_profile {
+  name = var.instance_profile_name
+}
+
   metadata_options {
     http_tokens                 = "required"
   }
@@ -41,11 +45,18 @@ resource "aws_launch_template" "web" {
     resource_type = "instance"
 
     tags = {
-      Name = "web-instance"
+      Name        = "web-instance"
+      Environment = var.environment
+      Tier        = "web"
     }
   }
 
-  user_data = filebase64("${path.module}/web_userdata.sh")
+  user_data = base64encode(templatefile(
+  "${path.module}/web_userdata.sh",
+  {
+    app_lb_dns = var.internal_lb_dns
+  }
+))
 }
 
 resource "aws_autoscaling_group" "web-asg" {
@@ -70,7 +81,7 @@ resource "aws_autoscaling_group" "web-asg" {
     preferences {
       min_healthy_percentage = 50
     }
-    triggers = ["tag"]
+    triggers = ["launch_template"]
   }
 
   target_group_arns = [aws_lb_target_group.web_instances.arn]

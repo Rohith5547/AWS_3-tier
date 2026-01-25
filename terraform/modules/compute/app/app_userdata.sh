@@ -43,6 +43,28 @@ Restart=on-failure
 WantedBy=multi-user.target
 EOF
 
+mkdir -p /opt/tomcat/webapps/health/WEB-INF
+chown -R tomcat:tomcat /opt/tomcat/webapps
+chown -R tomcat:tomcat /opt/tomcat/webapps/health
+
+cat <<EOF >/opt/tomcat/webapps/health/WEB-INF/web.xml
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         version="3.1">
+
+  <servlet>
+    <servlet-name>health</servlet-name>
+    <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>health</servlet-name>
+    <url-pattern>/health</url-pattern>
+  </servlet-mapping>
+
+</web-app>
+EOF
+
+
 # 6. Enable and start Tomcat
 systemctl daemon-reload
 systemctl enable tomcat

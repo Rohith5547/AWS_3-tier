@@ -16,12 +16,13 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_launch_template" "app" {
   name_prefix = "app-"
-  
-  ebs_optimized = true
 
-  image_id = data.aws_ami.ubuntu.id
-
+  image_id      = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
+
+  iam_instance_profile {
+    name = var.instance_profile_name
+  }
 
   metadata_options {
     http_tokens = "required"
@@ -37,12 +38,34 @@ resource "aws_launch_template" "app" {
 
   vpc_security_group_ids = [aws_security_group.app_sg.id]
 
-  tag_specifications {
-    resource_type = "instance"
-
-    tags = {
-      Name = "app-instance"
-    }
-  }
   user_data = filebase64("${path.module}/app_userdata.sh")
+}
+
+
+resource "aws_autoscaling_group" "app-asg" {
+  vpc_zone_identifier = var.app_subnet_ids
+  desired_capacity   = 1
+  max_size           = 2
+  min_size           = 1
+
+  launch_template {
+    id      = aws_launch_template.app.id
+    version = aws_launch_template.app.latest_version
+  }
+
+  tag {
+    key                 = "Key"
+    value               = "Value"
+    propagate_at_launch = true
+  }
+
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = 50
+    }
+    triggers = ["launch_template"]
+  }
+
+  target_group_arns = [aws_lb_target_group.app_instances.arn]
 }

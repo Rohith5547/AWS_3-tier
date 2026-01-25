@@ -8,6 +8,18 @@ variable "web_subnet_ids" {
   description = "Private subnets for ASG"
 }
 
+variable "internal_lb_dns" {
+    type = string
+    description = "dns of load balancer"
+}
 
+variable "environment" {
+    type = string
+    description = "dev, qa or prod"
+}
+
+variable "instance_profile_name" {
+    type = string
+}
 
 
