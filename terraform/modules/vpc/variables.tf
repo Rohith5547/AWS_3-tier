@@ -19,6 +19,11 @@ variable "public_subnets" {
   default = {}
 }
 
+variable "tgw_subnets" {
+  type    = map(string)
+  default = {}
+}
+
 variable "web_subnets" {
   type    = map(string)
   default = {}

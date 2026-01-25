@@ -1,4 +1,4 @@
-resource "aws_instance" "example" {
+resource "aws_instance" "bastion" {
   ami           = var.ami   # valid AMI required
   instance_type = var.instance_type
   key_name      = var.key_name

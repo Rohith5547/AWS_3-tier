@@ -31,7 +31,7 @@ resource "aws_db_instance" "db" {
   parameter_group_name = "default.mysql8.0"
   skip_final_snapshot  = var.environment != "prod"
   db_subnet_group_name = aws_db_subnet_group.db.name
-  vpc_security_group_ids = [var.db_sg]
+  vpc_security_group_ids = [var.db_sg_ids]
   max_allocated_storage = 50
   multi_az              = true
 }

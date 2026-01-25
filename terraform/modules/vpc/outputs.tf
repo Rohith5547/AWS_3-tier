@@ -11,7 +11,10 @@ output "transit_gateway_id" {
 }
 
 output "nat_gateway_id" {
-  value = aws_nat_gateway.nat.id
+  value = {
+    for az, nat in aws_nat_gateway.nat :
+    az => nat.id
+  } 
 }
 
 output "public_subnet_ids" {
@@ -47,5 +50,8 @@ output "isolated_route_table_id" {
 }
 
 output "nat_route_table_id" {
-  value = aws_route_table.nat.id
+  value = {
+    for az, rt in aws_route_table.nat :
+    az => rt.id
+  }
 }

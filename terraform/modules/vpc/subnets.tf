@@ -15,6 +15,20 @@ resource "aws_subnet" "public_subnets" {
   }
 }
 
+resource "aws_subnet" "tgw_subnets" {
+  for_each          = var.tgw_subnets
+  
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = each.value
+
+  # Choose an Availability Zone
+  availability_zone = each.key
+
+  tags = {
+    Name = "${var.environment}-tgw-${each.key}"
+  }
+}
+
 resource "aws_subnet" "web" {
   for_each          = var.web_subnets
   
@@ -25,7 +39,7 @@ resource "aws_subnet" "web" {
   availability_zone = each.key
 
   tags = {
-    Name = "${var.environment}-private-subnet-${each.key}"
+    Name = "${var.environment}-web-${each.key}"
     Tier = "web"
   }
 }
@@ -40,7 +54,7 @@ resource "aws_subnet" "app" {
   availability_zone = each.key
 
   tags = {
-    Name = "${var.environment}-private-subnet-${each.key}"
+    Name = "${var.environment}-app-${each.key}"
     Tier = "app"
   }
 }
@@ -54,7 +68,7 @@ resource "aws_subnet" "db" {
   # Choose an Availability Zone
   availability_zone = each.key
   tags = {
-    Name = "${var.environment}-private-subnet-${each.key}"
+    Name = "${var.environment}-db-${each.key}"
     Tier = "db"
   }
 }
@@ -67,7 +81,7 @@ resource "aws_subnet" "ci_cd" {
   # Choose an Availability Zone
   availability_zone = each.key
   tags = {
-    Name = "${var.environment}-private-subnet-${each.key}"
+    Name = "${var.environment}-CICD-${each.key}"
   }
 }
 
@@ -80,7 +94,7 @@ resource "aws_subnet" "internal_lb" {
   # Choose an Availability Zone
   availability_zone = each.key
   tags = {
-    Name = "${var.environment}-private-subnet-${each.key}"
+    Name = "${var.environment}-internal-lb-${each.key}"
   }
 }
 
@@ -168,11 +182,23 @@ resource "aws_route_table" "isolated" {
 }
 
 resource "aws_route_table_association" "isolated_subnets" {
-  for_each = merge(
-    aws_subnet.db,
-    aws_subnet.internal_lb
-  )
+  for_each = aws_subnet.db
 
   subnet_id      = each.value.id
   route_table_id = aws_route_table.isolated.id
+}
+
+#internal lb route 
+resource "aws_route_table" "internal_lb" {
+  vpc_id = aws_vpc.vpc.id
+
+  tags = {
+    Name = "${var.environment}-internal-lb-rt"
+  }
+}
+resource "aws_route_table_association" "internal_lb_subnets" {
+  for_each = aws_subnet.internal_lb
+
+  subnet_id      = each.value.id
+  route_table_id = aws_route_table.internal_lb.id
 }
