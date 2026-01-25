@@ -1,5 +1,20 @@
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  owners      = ["099720109477"] # Canonical
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
 resource "aws_instance" "bastion" {
-  ami           = var.ami   # valid AMI required
+  ami           = data.aws_ami.ubuntu.id   # valid AMI required
   instance_type = var.instance_type
   key_name      = var.key_name
 

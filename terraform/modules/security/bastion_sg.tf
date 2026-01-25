@@ -9,7 +9,7 @@ resource "aws_security_group" "bastionSg" {
     to_port     = 22
     protocol    = "tcp"
     # Allow access from any IP (0.0.0.0/0). Restrict this to your specific IP for better security.
-    cidr_blocks = [""]  #replace with devOps engineer laptop IP
+    cidr_blocks = [var.admin_cidr]  #replace with devOps engineer laptop IP
   }
 
   # Egress (outbound) rule: allow all outbound traffic

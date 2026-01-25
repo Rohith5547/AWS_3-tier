@@ -34,13 +34,13 @@ module "bastion" {
   subnet_id     = module.management.public_subnet_ids[0]
   bastion_sg_id = module.security.bastion_sg_id
   key_name      = aws_key_pair.sshkey.key_name
-  ami = var.ami
   instance_type = var.instance_type
   environment = var.environment
 }
 
 module "security" {
   source = "../../modules/security"
+  admin_cidr = var.admin_cidr
 
   application_vpc_id = module.management.vpc.id
   management_vpc_id = module.application.vpc.id
