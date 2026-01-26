@@ -17,7 +17,7 @@ variable "environment" {
     description = "envs dev|qa|prod"
 }
 
-variable "db_sg" {
-    type = string
+variable "db_sg_ids" {
+    type = list
     description = "security group of database"
 }
