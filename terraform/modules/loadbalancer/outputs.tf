@@ -1,5 +1,5 @@
 output "alb_id" {
-    value = aws_lb.test.id
+    value = aws_lb.internet_facing.id
 }
 
 output "alb_arn" {
@@ -14,3 +14,10 @@ output "web_target_group_arn" {
   value = aws_lb_target_group.web_instances.arn
 }
 
+output "internal_alb_id" {
+    value = aws_lb.internal_lb.id
+}
+
+output "app_target_group_arn" {
+  value = aws_lb_target_group.app_instances.arn
+}
