@@ -18,7 +18,7 @@ variable "internal_lb_subnet_ids" {
   description = "Private subnet IDs for internal ALB"
 }
 
-variable "ACM_certificate" {
+variable "ACM_certificate_arn" {
   type = string
   description = "certificate for verification"
 }
