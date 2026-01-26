@@ -1,4 +1,6 @@
 environment                   = "dev"
+admin_cidr                    = "203.0.113.45/32"
+
 
 #management vpc
 management = {
